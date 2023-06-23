@@ -25,7 +25,7 @@ async fn main() -> Result<()> {
     let greeter = Greeter { count: 0 };
     let guid = Guid::generate();
 
-    let listener  = UnixListener::bind("greeter").unwrap();
+    let listener  = UnixListener::bind("/tmp/greeter").unwrap();
 
     loop {
         match listener.accept().await {

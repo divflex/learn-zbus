@@ -14,11 +14,14 @@ impl Greeter {
     }
 }
 
-// Although we use `async-std` here, you can use any async runtime of choice.
+/// use `dbus-launch`
+/// 
+/// use the result (DBUS_SESSION_BUS_ADDRESS/DBUS_SESSION_BUS_PID/DBUS_SESSION_BUS_WINDOWID) 
+/// 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
     let greeter = Greeter { count: 0 };
-    let _conn = ConnectionBuilder::address("tcp:host=127.0.0.1,port=30958")?
+    let _conn = ConnectionBuilder::address("unix:abstract=/tmp/dbus-IP6WRN8s2E,guid=db0e4a25a334f6020e14ac3c6495ae5f")?
         .name("org.zbus.MyGreeter")?
         .serve_at("/org/zbus/MyGreeter", greeter)?
         .build()

@@ -1,7 +1,7 @@
 #[cfg(feature = "tokio")]
 use tokio::net::UnixStream;
 use zbus::{ConnectionBuilder as Builder, dbus_proxy, Result};
-
+use std::future::{pending};
 
 #[dbus_proxy(
     interface = "org.zbus.MyGreeter1",
@@ -16,12 +16,12 @@ trait MyGreeter {
 #[tokio::main]
 async fn main() -> Result<()> {
 
-    let client = UnixStream::connect("greeter").await.unwrap();
+    let client = UnixStream::connect("/tmp/greeter").await.unwrap();
     let conn = Builder::unix_stream(client).p2p().build().await?;
     let proxy = MyGreeterProxy::new(&conn).await?;
     let reply = proxy.say_hello("Maria").await?;
 
     println!("reply {}", reply);
-
+    pending::<()>().await;
     Ok(())
 }
